@@ -3,12 +3,13 @@
 from dataclasses import dataclass
 from typing import Dict, Any
 
-from application.queries.artifact_queries import GetPromptTemplateQuery, GetContextQuery
-from application.commands.artifact_commands import (
+from application.queries import GetPromptTemplateQuery, GetContextQuery
+from application.commands import (
     GetContextCommand, 
     GeneratePromptCommand, 
     UpdateContentCommand
 )
+
 from domain.Artifact import Artifact, ContentStore
 
 
