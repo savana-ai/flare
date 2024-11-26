@@ -67,3 +67,26 @@ class ArtifactContentService:
 
         # Update content
         artifact.update_content(generated_content)
+
+
+# ----
+
+'''
+
+Importing Artifact is easier than importing c&q
+
+defining repositories here is easier than other places - reduce redundancy : since all queries are here
+
+We can also define repos where they are used - entities : for CUD ops
+
+or just define repos alongside entities and queries within entities as well as commands
+
+now we dont have intermediaries : everything is in one place
+
+we have well define repos (alongside entities) - and the application is a clean line
+
+---
+
+
+'''
+

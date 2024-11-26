@@ -1,2 +1,6 @@
 app service should be tailored to specific project - thus also the content store 
 
+user should instantiate project :
+    - project name and more info
+    - fill in questionnaire
+    - compile to a json object
