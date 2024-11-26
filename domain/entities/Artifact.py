@@ -1,57 +1,29 @@
 from dataclasses import dataclass
-from typing import List, Dict, Optional
-from enum import Enum
-from datetime import datetime
+from typing import List, Dict
 import uuid
-import json
-import os
-from pathlib import Path
 
+from domain.value_objects.artifact_type import ArtifactType
+from domain.value_objects.prompt_template import PromptTemplate
+from domain.value_objects.prompt import Prompt
+from infrastructure.repositories.stores import content_store  # Use this directly
 
 @dataclass
 class Artifact:
     id: str
     project_id: str
     type: ArtifactType
-    content_store: ContentStore
+    content_store: object  # Type hint as `object` if it's not a class (JSONRepository instance)
 
-    def __init__(self, project_id: str, type: ArtifactType, content_store: ContentStore):
+    def __init__(self, project_id: str, type: ArtifactType, content_store=content_store):
         self.id = str(uuid.uuid4())
         self.project_id = project_id
         self.type = type
         self.content_store = content_store
 
-    def get_context(self, template: PromptTemplate) -> List[Dict]:
-        """
-        Retrieves context from all artifacts referenced in the template's objects field.
-
-        Args:
-            template: PromptTemplate containing object references
-
-        Returns:
-            List[Dict]: Combined content from all referenced artifacts
-        """
-        contexts = []
-        for obj_type in template.objects:
-            # Get content list from referenced artifact's storage
-            artifact_content = self.content_store.get_content(ArtifactType(obj_type))
-            contexts.extend(artifact_content)  # Add all items from content list
-        return contexts
-
     def create_prompt(self, template: PromptTemplate) -> List[Prompt]:
-        """
-        Creates prompts by combining template with context from referenced artifacts.
+        from application.queries.artifact_queries import get_context  # Dynamic import for queries
+        contexts = get_context(self.content_store, template)
 
-        Args:
-            template: The prompt template to use
-
-        Returns:
-            List[Prompt]: List of prompts, one for each context item
-        """
-        # Get all context items
-        contexts = self.get_context(template)
-
-        # Create new prompt for each context item
         prompts = []
         template_dict = template.__dict__.copy()
         del template_dict['objects']  # Remove objects field
@@ -72,4 +44,4 @@ class Artifact:
         Args:
             content: New content list to store
         """
-        self.content_store.update_content(self.type, content)
+        self.content_store.update(self.type, content)
