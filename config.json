@@ -1,0 +1,18 @@
+{
+    "openai": {
+        "base_url": "https://api.openai.com/v1",
+        "auth_type": "bearer"
+    },
+    "anthropic": {
+        "base_url": "https://api.anthropic.com/v1",
+        "auth_type": "bearer"
+    },
+    "google_gmail": {
+        "base_url": "https://gmail.googleapis.com/gmail/v1",
+        "auth_type": "bearer"
+    },
+    "gemini": {
+        "base_url": "https://generativelanguage.googleapis.com/v1beta",
+        "auth_type": "bearer"
+    }
+}
